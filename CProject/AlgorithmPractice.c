@@ -3,6 +3,7 @@
 */
 
 #include <stdio.h>
+#include <math.h>
 #include <dateutil.h>
 
 #define MAX_LEN 12
@@ -195,9 +196,132 @@ void outputCalendar()
      
 }
 
+/*
+** 存款最大值(穷举方式, 注意循环条件) 
+*/
+float depositRate(float capital, int years)
+{
+      if(years <= 0)
+          return capital;
+     
+     //年方式的次数 
+     int n1;
+     int n2;
+     int n3;
+     int n5;
+     int n8;
+     
+     int l1;
+     int l2;
+     int l3;
+     int l5;
+     int l8;
+     
+     //年利率 
+     double r1 = 0.0063;
+     double r2 = 0.0066;
+     double r3 = 0.0069;
+     double r5 = 0.0075;
+     double r8 = 0.0084;
+     
+     float max = 0.0;
+     float temp; 
+     
+     //应该用值保存各年的最大值。。 
+     for(n8 = 0; n8 <= years/8; n8++)
+     {
+            for(n5 = 0; n5 <= (years - n8 * 8) / 5; n5++)
+            {
+                   for(n3 = 0; n3 <= (years - n8 * 8 - n5 * 5) / 3; n3++)
+                   {
+                          for(n2 = 0; n2 <= (years - n8 * 8 - n5 * 5 - n3 * 3)/2; n2++)
+                          {
+                                 n1 = years - n8 * 8 - n5 * 5 - n3 * 3 - n2 * 2;
+                                 
+                                 temp = capital * pow((double)(1 + 12 * r1), (double)n1) 
+                                                * pow((double)(1 + 12 * r2 * 2), (double)n2) 
+                                                * pow((double)(1 + 12 * r3 * 3), (double)n3)
+                                                * pow((double)(1 + 12 * r5 * 5), (double)n5)
+                                                * pow((double)(1 + 12 * r8 * 8), (double)n8);
+                                        
+                                        
+                                 if(temp > max)
+                                 {
+                                     max = temp;
+                                     l1 = n1;
+                                     l2 = n2;
+                                     l3 = n3;
+                                     l5 = n5;
+                                     l8 = n8;
+                                 }
+                          }
+                   }
+            }
+     }
+     
+     /*
+     printf("max value:%.2f\n", max);
+     printf("number 8 years:%d\n", l8);
+     printf("number 5 years:%d\n", l5);
+     printf("number 3 years:%d\n", l3);
+     printf("number 2 years:%d\n", l2);
+     printf("number 1 years:%d\n", l1);
+     */
+     
+     return max;
+      
+}
+
+/*
+** 结合存款利率进行供楼... 
+*/
+void repaymentHouse()
+{
+     float capital = 20000.0;  //本金
+     
+     float saves[4] = {0.2, 0.15, 0.1, 0.0}; //优惠
+     
+     int years[4] = {0, 5, 10, 20};
+     
+     float everyYearPay;
+     
+     float max = depositRate(capital * saves[0], 20 - years[0]);
+     
+     printf("%.2f\n", max);
+     
+     float remainValue;
+     
+     int i;
+     int j;
+     for(i = 1; i < 4; i++)
+     {
+         everyYearPay = capital * (float)(1 - saves[i]) / (float)years[i];
+         
+         printf("%.2f  ", everyYearPay);
+         
+         for(j = 0; j < years[i]; j++)
+         {
+               capital = depositRate(capital - everyYearPay, 1);
+         }
+         
+         printf("%.2f\n", capital);
+         
+         capital = depositRate(capital, 20 - years[i]);         
+         
+         if(capital > max)
+         {
+               max = capital;
+         }
+     }
+     
+     printf("max remain value: %.2f\n", max);  
+      
+}
+
+
 int main()
 {
-    outputCalendar();
+    repaymentHouse();
     
     system("pause");
     
