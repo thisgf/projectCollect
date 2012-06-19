@@ -2,16 +2,21 @@
 ** Copyright (C) QPSOFT.COM All rights reserved.
 */
 
+#include <stdio.h>
+
 int main()
 {
     iteratorBooks();
+    
+    system("pause");
+    
     return 0;
 }
 
 /**
- * Çî¾ÙÊé±¾
+ * iterator book
  */
-void iteratorBooks()
+int iteratorBooks()
 {
     int max_book = 5;
     int a, b, c;
@@ -34,5 +39,13 @@ void iteratorBooks()
             }
         }
     }
+    
+    return 0;
+
+}
+
+
+void yangHuiTriangle()
+{
 
 }
