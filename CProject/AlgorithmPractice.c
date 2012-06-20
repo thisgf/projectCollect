@@ -318,10 +318,50 @@ void repaymentHouse()
       
 }
 
+/*
+** 分鱼 
+*/
+void allocaFish()
+{
+     int i;
+     int j;
+     int step;
+     
+     int flag = 1;
+     
+     for(step = 6; flag; step += 1)
+     {
+           for(i = step, j = 1; j <= 5 && flag; j++)   //全部分完 
+           {
+                 if((i - 1) % 5 == 0)
+                 {
+                     i = (i - 1) * 4 / 5;
+                 }
+                 else
+                 {
+                     flag = 0;
+                 }
+           }
+           
+           if(flag)
+           {
+               break;
+           }
+           else
+           {
+               flag = 1;
+           }
+     }
+     
+     printf("total fish:%d\n", step);
+          
+         
+}
+
 
 int main()
 {
-    repaymentHouse();
+    allocaFish();
     
     system("pause");
     
