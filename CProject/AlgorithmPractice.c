@@ -358,10 +358,17 @@ void allocaFish()
          
 }
 
+/*
+** Тєгу 
+*/
+void sellFish()
+{
+
+}
 
 int main()
 {
-    allocaFish();
+    sellFish();
     
     system("pause");
     
